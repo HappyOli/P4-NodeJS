@@ -117,6 +117,31 @@ module.exports = function (config, log) {
 			});
 	},
 
+	//
+	// Get latest files for a particular path.
+	//
+	// options
+	//		force: 	true|false		Enables Perforce force get, overwriting all files (be careful with this!)
+	//
+	self.where = function (path, options) {
+		if (!path) {
+			throw new Error('Path to get-latest not specified.');
+		}
+
+		var p4Args = [
+			"-u", config.p4User,
+			"-c", config.p4Workspace,
+			"-p", config.p4Host,
+			"where",
+		];
+
+		p4Args.push(path);
+
+		return spawn("p4", p4Args, {
+			cwd: config.workingDirectory,
+			maxBuffer: execBufferSize,
+		});
+	},
 
 	//
 	// Create a new change set with a specified name.
