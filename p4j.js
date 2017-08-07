@@ -60,7 +60,11 @@ module.exports = function (config, log) {
 
 		if (!config.workingDirectory) {
 			throw new Error("workingDirectory not specified in config");	
-		}		
+		}			
+
+		if (!config.p4Passwd) {
+			throw new Error("p4Passwd not specified in config");	
+		}	
 	};
 
 	//
@@ -102,6 +106,7 @@ module.exports = function (config, log) {
 			"-u", config.p4User,
 			"-c", config.p4Workspace,
 			"-p", config.p4Host,
+			"-P", config.p4Passwd,
 			"sync", 
 		];
 
@@ -116,32 +121,6 @@ module.exports = function (config, log) {
 				maxBuffer: execBufferSize,
 			});
 	},
-	
-	//
-	// Get latest files for a particular path.
-	//
-	// options
-	//		force: 	true|false		Enables Perforce force get, overwriting all files (be careful with this!)
-	//
-	self.where = function (path, options) {
-		if (!path) {
-			throw new Error('Path to get-latest not specified.');
-		}
-
-		var p4Args = [
-			"-u", config.p4User,
-			"-c", config.p4Workspace,
-			"-p", config.p4Host,
-			"where",
-		];
-
-		p4Args.push(path);
-
-		return spawn("p4", p4Args, {
-			cwd: config.workingDirectory,
-			maxBuffer: execBufferSize,
-		});
-	},
 
 	//
 	// Get latest files for a particular path.
@@ -158,6 +137,7 @@ module.exports = function (config, log) {
 			"-u", config.p4User,
 			"-c", config.p4Workspace,
 			"-p", config.p4Host,
+			"-P", config.p4Passwd,
 			"where",
 		];
 
@@ -187,6 +167,7 @@ module.exports = function (config, log) {
 			"-u", config.p4User,
 			"-c", config.p4Workspace,
 			"-p", config.p4Host,
+			"-P", config.p4Passwd,
 			"change", 
 			"-i"
 		].join(' ');
@@ -214,6 +195,7 @@ module.exports = function (config, log) {
 			"-u", config.p4User,
 			"-c", config.p4Workspace,
 			"-p", config.p4Host,
+			"-P", config.p4Passwd,
 			"changes", 
 			"-u", config.p4User,
 			"-c", config.p4Workspace,
@@ -268,6 +250,7 @@ module.exports = function (config, log) {
 			"-u", config.p4User,
 			"-c", config.p4Workspace,
 			"-p", config.p4Host,
+			"-P", config.p4Passwd,
 			"edit", 
 			"-c", changeSetId,
 			quote(path)
@@ -304,6 +287,7 @@ module.exports = function (config, log) {
 			
 		var p4Args = [
 			"-u", config.p4User,
+			"-P", config.p4Passwd,
 			"-c", config.p4Workspace,
 			"-p", config.p4Host,
 			"-x", path.join(config.workingDirectory, filesListFileName),
@@ -328,6 +312,7 @@ module.exports = function (config, log) {
 
 		var p4Args = [
 			"-u", config.p4User,
+			"-P", config.p4Passwd,
 			"-c", config.p4Workspace,
 			"-p", config.p4Host,
 			"revert", 
@@ -351,6 +336,7 @@ module.exports = function (config, log) {
 
 		var p4Args = [
 			"-u", config.p4User,
+			"-P", config.p4Passwd,
 			"-c", config.p4Workspace,
 			"-p", config.p4Host,
 			"revert", 
@@ -388,6 +374,7 @@ module.exports = function (config, log) {
 
 		var p4Args = [
 			"-u", config.p4User,
+			"-P", config.p4Passwd,
 			"-c", config.p4Workspace,
 			"-p", config.p4Host,
 			"change", 
@@ -411,6 +398,7 @@ module.exports = function (config, log) {
 
 		var p4Args = [
 			"-u", config.p4User,
+			"-P", config.p4Passwd,
 			"-c", config.p4Workspace,
 			"-p", config.p4Host,
 			"submit", 
@@ -430,6 +418,7 @@ module.exports = function (config, log) {
 
 		var p4Args = [
 			"-u", config.p4User,
+			"-P", config.p4Passwd,
 			"-c", config.p4Workspace,
 			"-p", config.p4Host,
 			"info"
