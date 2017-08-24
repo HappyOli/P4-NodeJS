@@ -52,11 +52,7 @@ module.exports = function (config, log) {
 
 		if (!config.p4Host) {
 			throw new Error("p4Host not specified in config");	
-		}
-
-		if (!config.p4ExePath) {
-			throw new Error("p4ExePath not specified in config");	
-		}		
+		}	
 
 		if (!config.workingDirectory) {
 			throw new Error("workingDirectory not specified in config");	
